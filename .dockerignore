@@ -1,0 +1,6 @@
+target/resolution-cache/*
+target/streams/*
+target/webapp/*
+project/*
+src/*
+.lib/*

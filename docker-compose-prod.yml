@@ -1,0 +1,45 @@
+version: '2'
+services:
+  app1:
+    build: .
+    depends_on:
+      - db
+    environment:
+      - REDIS_HOST=db
+      - REDIS_PORT=6379
+  app2:
+    build: .
+    depends_on:
+      - db
+    environment:
+      - REDIS_HOST=db
+      - REDIS_PORT=6379
+  app3:
+    build: .
+    depends_on:
+      - db
+    environment:
+      - REDIS_HOST=db
+      - REDIS_PORT=6379
+  db:
+    image: redis
+    ports:
+        - "6379"
+  nginx:
+    build: ./lb
+    links:
+        - app1:app1
+        - app2:app2
+        - app3:app3
+    ports:
+        - "8080:80"  
+  ssl:
+    image: smashwilson/lets-nginx
+    ports:
+     - "80:80"
+     - "443:443"
+    environment:
+     - EMAIL=max@windrush.io
+     - DOMAIN=pleasegivemajob.maxwalker.me
+     - UPSTREAM=nginx:8080
+
